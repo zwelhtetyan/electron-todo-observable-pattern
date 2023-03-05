@@ -2,7 +2,7 @@ import { ProductData } from '@/types';
 import Image from 'next/image';
 
 export async function generateStaticParams() {
-  const res = await fetch('https://fakestoreapi.com/products');
+  const res = await fetch(`${process.env.ROOT_URL}/api/products`);
   const data: ProductData[] = await res.json();
 
   return data.map((product) => ({ slug: product.id.toString() }));
@@ -13,7 +13,7 @@ export default async function ProductDetail({
 }: {
   params: { slug: string };
 }) {
-  const res = await fetch(`https://fakestoreapi.com/products/${slug}`);
+  const res = await fetch(`${process.env.ROOT_URL}/api/products/${slug}`);
   const { title, price, image }: ProductData = await res.json();
 
   return (
