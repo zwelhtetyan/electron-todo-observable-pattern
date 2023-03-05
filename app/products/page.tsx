@@ -3,7 +3,7 @@ import { ProductData } from '@/types';
 import Link from 'next/link';
 
 export default async function Shop() {
-  const res = await fetch('http://localhost:3000/api/products');
+  const res = await fetch('https://fakestoreapi.com/products');
   const data: ProductData[] = await res.json();
 
   return (
