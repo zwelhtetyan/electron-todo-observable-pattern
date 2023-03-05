@@ -13,7 +13,7 @@ export default async function ProductDetail({
 }: {
   params: { slug: string };
 }) {
-  const res = await fetch(`${process.env.ROOT_URL}/api/products/${slug}`);
+  const res = await fetch(`https://fakestoreapi.com/products/${slug}`);
   const { title, price, image }: ProductData = await res.json();
 
   return (
