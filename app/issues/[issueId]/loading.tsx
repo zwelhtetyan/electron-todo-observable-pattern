@@ -1,5 +1,3 @@
-import React from 'react';
-
-export default function LoadingIssue() {
-  return <div>LoadingIssue...</div>;
+export default function Loading() {
+  return <div>Loading...</div>;
 }
