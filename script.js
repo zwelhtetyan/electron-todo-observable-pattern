@@ -27,10 +27,7 @@ class TodoStore {
       (todo) => todo.id === id.toString()
     );
 
-    if (idxToRemove === -1) {
-      this.updateFunc && this.updateFunc(this.#todoData);
-      return;
-    }
+    if (idxToRemove === -1) return;
 
     this.#todoData.splice(idxToRemove, 1);
     this.updateFunc && this.updateFunc(this.#todoData);
@@ -48,9 +45,3 @@ todoStore.subscribe(logger);
 function logger(data) {
   console.log(data);
 }
-
-function updateTodo() {}
-
-function deleteTodo() {}
-
-function toggleTodo() {}
