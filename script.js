@@ -5,6 +5,7 @@ toggle task */
 
 class TodoStore {
   #todoData = [];
+
   updateFunc = null;
 
   get getTodos() {
@@ -38,10 +39,36 @@ class TodoStore {
   }
 }
 
+// ui
+const todoContainer = document.getElementById('todo-container');
+function updateTodoUI(data) {
+  todoContainer.innerHTML = '';
+
+  data.forEach((data) => {
+    const liTag = document.createElement('li');
+    liTag.textContent = data.taskName;
+
+    todoContainer.appendChild(liTag);
+  });
+}
+
+// initialize store
 const todoStore = new TodoStore();
 
-todoStore.subscribe(logger);
+// subscribe store to update ui
+todoStore.subscribe(updateTodoUI);
 
-function logger(data) {
-  console.log(data);
-}
+updateTodoUI(todoStore.getTodos);
+
+// add todo ui
+const todoInput = document.getElementById('todo-input');
+const addTodoBtn = document.getElementById('add-todo-btn');
+
+addTodoBtn.addEventListener('click', () => {
+  const taskName = todoInput.value;
+
+  if (taskName.trim() === '') return;
+
+  todoStore.addTodo(taskName);
+  todoInput.value = '';
+});
