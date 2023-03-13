@@ -39,26 +39,11 @@ class TodoStore {
   }
 }
 
-// ui
-const todoContainer = document.getElementById('todo-container');
-function updateTodoUI(data) {
-  todoContainer.innerHTML = '';
-
-  data.forEach((data) => {
-    const liTag = document.createElement('li');
-    liTag.textContent = data.taskName;
-
-    todoContainer.appendChild(liTag);
-  });
-}
-
 // initialize store
 const todoStore = new TodoStore();
 
 // subscribe store to update ui
 todoStore.subscribe(updateTodoUI);
-
-updateTodoUI(todoStore.getTodos);
 
 // add todo ui
 const todoInput = document.getElementById('todo-input');
@@ -72,3 +57,29 @@ addTodoBtn.addEventListener('click', () => {
   todoStore.addTodo(taskName);
   todoInput.value = '';
 });
+
+// ui
+const todoContainer = document.getElementById('todo-container');
+function updateTodoUI(data) {
+  todoContainer.innerHTML = '';
+
+  data.forEach((data) => {
+    const liTag = document.createElement('li');
+    const taskNameSpan = document.createElement('span');
+    const deleteIconSpan = document.createElement('span');
+
+    taskNameSpan.textContent = data.taskName;
+    deleteIconSpan.textContent = `❌`;
+    deleteIconSpan.style.cssText = 'font-size: 12px; margin-left: 1rem;';
+
+    deleteIconSpan.addEventListener('click', () => {
+      todoStore.removeTodo(data.id);
+    });
+
+    liTag.append(taskNameSpan, deleteIconSpan);
+
+    todoContainer.appendChild(liTag);
+  });
+}
+
+updateTodoUI(todoStore.getTodos);
