@@ -1,7 +1,9 @@
-/* add task
-update task
-delete task
-toggle task */
+/*
+add todo
+update todo
+delete todo
+toggle todo
+*/
 
 class TodoStore {
   #todoData = [];
@@ -26,6 +28,14 @@ class TodoStore {
   updateTodo(id, taskName) {
     this.#todoData = this.#todoData.map((todo) =>
       todo.id === id ? { ...todo, taskName } : todo
+    );
+
+    this.updateFunc && this.updateFunc(this.#todoData);
+  }
+
+  toggleTodo(id) {
+    this.#todoData = this.#todoData.map((todo) =>
+      todo.id === id ? { ...todo, done: !todo.done } : todo
     );
 
     this.updateFunc && this.updateFunc(this.#todoData);
@@ -75,25 +85,33 @@ function updateTodoUI(data) {
 
   data.forEach((data) => {
     const liTag = document.createElement('li');
+    const checkInput = document.createElement('input');
     const taskNameSpan = document.createElement('span');
-    const deleteIconSpan = document.createElement('span');
+    const deleteBtn = document.createElement('button');
 
+    checkInput.type = 'checkbox';
+    checkInput.checked = data.done ? true : false;
     taskNameSpan.textContent = data.taskName;
     taskNameSpan.contentEditable = true;
-    deleteIconSpan.textContent = `❌`;
-    deleteIconSpan.style.cssText = 'font-size: 12px; margin-left: 1rem;';
+    deleteBtn.textContent = `❌`;
+    deleteBtn.style.cssText = 'font-size: 12px; margin-left: 1rem;';
 
     // update todo
     taskNameSpan.addEventListener('blur', () => {
       todoStore.updateTodo(data.id, taskNameSpan.textContent);
     });
 
+    // toggle todo
+    checkInput.addEventListener('click', () => {
+      todoStore.toggleTodo(data.id);
+    });
+
     // delete todo
-    deleteIconSpan.addEventListener('click', () => {
+    deleteBtn.addEventListener('click', () => {
       todoStore.removeTodo(data.id);
     });
 
-    liTag.append(taskNameSpan, deleteIconSpan);
+    liTag.append(checkInput, taskNameSpan, deleteBtn);
 
     todoContainer.appendChild(liTag);
   });
