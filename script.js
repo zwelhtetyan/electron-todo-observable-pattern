@@ -14,6 +14,10 @@ class TodoStore {
     return this.#todoData;
   }
 
+  set setTodos(todoData) {
+    this.#todoData = todoData;
+  }
+
   addTodo(taskName) {
     const newTodo = {
       id: new Date().getTime().toString(),
@@ -61,7 +65,11 @@ class TodoStore {
 const todoStore = new TodoStore();
 
 // subscribe store to update ui
-todoStore.subscribe(updateTodoUI);
+todoStore.subscribe((data) => {
+  updateTodoUI(data);
+
+  saveDataToLS('todoData', data);
+});
 
 // add task
 const todoInput = document.getElementById('todo-input');
@@ -79,8 +87,6 @@ addTodoBtn.addEventListener('click', () => {
 // display todos
 const todoContainer = document.getElementById('todo-container');
 function updateTodoUI(data) {
-  console.log(data);
-
   todoContainer.innerHTML = '';
 
   data.forEach((data) => {
@@ -117,4 +123,20 @@ function updateTodoUI(data) {
   });
 }
 
-updateTodoUI(todoStore.getTodos);
+function getDataFromLS(key) {
+  return JSON.parse(localStorage.getItem(key));
+}
+
+function saveDataToLS(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+function init() {
+  const todoData = getDataFromLS('todoData');
+
+  todoStore.setTodos = todoData;
+
+  updateTodoUI(todoData);
+}
+
+init();
