@@ -47,7 +47,7 @@ class TodoStore {
 
   removeTodo(id) {
     const idxToRemove = this.#todoData.findIndex(
-      (todo) => todo.id === id.toString()
+      (todo) => todo.id.toString() === id.toString()
     );
 
     if (idxToRemove === -1) return;
@@ -66,6 +66,8 @@ const todoStore = new TodoStore();
 
 // subscribe store to update ui
 todoStore.subscribe((data) => {
+  console.log(data);
+
   updateTodoUI(data);
 
   saveDataToLS('todoData', data);
@@ -132,7 +134,7 @@ function saveDataToLS(key, value) {
 }
 
 function init() {
-  const todoData = getDataFromLS('todoData');
+  const todoData = getDataFromLS('todoData') || todoStore.getTodos;
 
   todoStore.setTodos = todoData;
 
