@@ -23,6 +23,14 @@ class TodoStore {
     this.updateFunc && this.updateFunc(this.#todoData);
   }
 
+  updateTodo(id, taskName) {
+    this.#todoData = this.#todoData.map((todo) =>
+      todo.id === id ? { ...todo, taskName } : todo
+    );
+
+    this.updateFunc && this.updateFunc(this.#todoData);
+  }
+
   removeTodo(id) {
     const idxToRemove = this.#todoData.findIndex(
       (todo) => todo.id === id.toString()
@@ -61,6 +69,8 @@ addTodoBtn.addEventListener('click', () => {
 // ui
 const todoContainer = document.getElementById('todo-container');
 function updateTodoUI(data) {
+  console.log(data);
+
   todoContainer.innerHTML = '';
 
   data.forEach((data) => {
@@ -69,8 +79,13 @@ function updateTodoUI(data) {
     const deleteIconSpan = document.createElement('span');
 
     taskNameSpan.textContent = data.taskName;
+    taskNameSpan.contentEditable = true;
     deleteIconSpan.textContent = `❌`;
     deleteIconSpan.style.cssText = 'font-size: 12px; margin-left: 1rem;';
+
+    taskNameSpan.addEventListener('blur', () => {
+      todoStore.updateTodo(data.id, taskNameSpan.textContent);
+    });
 
     deleteIconSpan.addEventListener('click', () => {
       todoStore.removeTodo(data.id);
