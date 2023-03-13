@@ -53,7 +53,7 @@ const todoStore = new TodoStore();
 // subscribe store to update ui
 todoStore.subscribe(updateTodoUI);
 
-// add todo ui
+// add task
 const todoInput = document.getElementById('todo-input');
 const addTodoBtn = document.getElementById('add-todo-btn');
 
@@ -66,7 +66,7 @@ addTodoBtn.addEventListener('click', () => {
   todoInput.value = '';
 });
 
-// ui
+// display todos
 const todoContainer = document.getElementById('todo-container');
 function updateTodoUI(data) {
   console.log(data);
@@ -83,10 +83,12 @@ function updateTodoUI(data) {
     deleteIconSpan.textContent = `❌`;
     deleteIconSpan.style.cssText = 'font-size: 12px; margin-left: 1rem;';
 
+    // update todo
     taskNameSpan.addEventListener('blur', () => {
       todoStore.updateTodo(data.id, taskNameSpan.textContent);
     });
 
+    // delete todo
     deleteIconSpan.addEventListener('click', () => {
       todoStore.removeTodo(data.id);
     });
