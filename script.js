@@ -143,7 +143,9 @@ function init() {
   updateTodoUI(todoData);
 }
 
+// register serviceWorker
 navigator.serviceWorker.register('sw.js');
+
 function notifyMe(title, bodyText) {
   if (!('Notification' in window)) {
     // Check if the browser supports notifications
@@ -157,7 +159,7 @@ function notifyMe(title, bodyText) {
     // });
 
     navigator.serviceWorker.ready.then(function (registration) {
-      registration.showNotification('Notification with ServiceWorker', {
+      registration.showNotification(title, {
         body: bodyText,
       });
     });
@@ -171,7 +173,7 @@ function notifyMe(title, bodyText) {
         // });
 
         navigator.serviceWorker.ready.then(function (registration) {
-          registration.showNotification('Notification with ServiceWorker', {
+          registration.showNotification(title, {
             body: bodyText,
           });
         });
