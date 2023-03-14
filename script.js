@@ -143,6 +143,7 @@ function init() {
   updateTodoUI(todoData);
 }
 
+navigator.serviceWorker.register('sw.js');
 function notifyMe(title, bodyText) {
   if (!('Notification' in window)) {
     // Check if the browser supports notifications
@@ -151,16 +152,28 @@ function notifyMe(title, bodyText) {
     // Check whether notification permissions have already been granted;
     // if so, create a notification
 
-    const notification = new Notification(title, {
-      body: bodyText,
+    // const notification = new Notification(title, {
+    //   body: bodyText,
+    // });
+
+    navigator.serviceWorker.ready.then(function (registration) {
+      registration.showNotification('Notification with ServiceWorker', {
+        body: bodyText,
+      });
     });
   } else if (Notification.permission !== 'denied') {
     // We need to ask the user for permission
     Notification.requestPermission().then((permission) => {
       // If the user accepts, let's create a notification
       if (permission === 'granted') {
-        const notification = new Notification(title, {
-          body: bodyText,
+        // const notification = new Notification(title, {
+        //   body: bodyText,
+        // });
+
+        navigator.serviceWorker.ready.then(function (registration) {
+          registration.showNotification('Notification with ServiceWorker', {
+            body: bodyText,
+          });
         });
       }
     });
